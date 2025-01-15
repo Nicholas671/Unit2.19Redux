@@ -25,7 +25,8 @@ const freeLancers = [
     { name: "Alice", job: "Demonologist", price: 100 },
     { name: "Bob", job: "Geologist", price: 75 },
 ]
-
+//max 
+const max = 20;
 //function to render the list of freelancers
 function render() {
     const freeLanceList = document.getElementById("freelancers");
@@ -48,12 +49,27 @@ function addFreeLancer() {
     freeLancers.push(newFreeLancer);
 
 }
+//average the price of all freelancers
+function averagePrice() {
+    const total = freeLancers.reduce((acc, freeLancer) => acc + parseFloat(freeLancer.price), 0);
+    return total / freeLancers.length;
+}
+//display the average price of the freelancers
+function updateAveragePrice() {
+    const averagePriceElement = document.getElementById("average-price");
+    averagePriceElement.textContent = `Average Price: $${averagePrice().toFixed(2)}`;
+}
 
 //set the interval of freelancers
 const addFreeLancerInterval = setInterval(() => {
     addFreeLancer();
     render();
+    updateAveragePrice();
+    if (freeLancers.length >= max) {
+        clearInterval(addFreeLancerInterval);
+    }
 }, 1500
 );
 //inital render
 render();
+updateAveragePrice();
